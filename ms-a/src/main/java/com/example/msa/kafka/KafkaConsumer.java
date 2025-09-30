@@ -1,0 +1,30 @@
+package com.example.msa.kafka;
+
+import com.example.dtos.AgeEvent;
+import com.example.msa.model.Status;
+import com.example.msa.repository.PersonRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
+@Slf4j
+public class KafkaConsumer {
+
+    private final PersonRepository personRepository;
+
+    @KafkaListener(topics = "age-calculated-topic", groupId = "ms-a-group")
+    public void handleAgeEvent(AgeEvent event) {
+        log.info("Received AgeEvent for person: {} with age: {}", event.getPersonId(), event.getAge());
+
+        personRepository.findById(event.getPersonId()).ifPresent(person -> {
+            person.setAge(event.getAge());
+            person.setStatut("TERMINE".equals(event.getStatus()) ? Status.TERMINE : Status.ECHEC);
+            personRepository.save(person);
+            log.info("Updated person {} with age {} and status {}",
+                    event.getPersonId(), event.getAge(), person.getStatut());
+        });
+    }
+}
