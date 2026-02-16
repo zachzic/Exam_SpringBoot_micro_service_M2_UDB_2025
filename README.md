@@ -1,11 +1,13 @@
 # Gestion Personnes & Age
 
 Architecture microservices evenementielle avec Kafka:
+
 - `ms-a` (port `8081`): creation/consultation des personnes
 - `ms-b` (port `8082`): calcul et consultation des ages
 - `common-dtos`: DTO partages entre les services
 
 Le flux metier est:
+
 1. `POST /persons` sur `ms-a`
 2. publication `PersonCreatedEvent` sur Kafka
 3. consommation par `ms-b` et calcul de l'age
@@ -43,6 +45,7 @@ docker compose ps
   - `jdbc:mysql://localhost:3307/ages_db` (ms-b)
 
 Fichiers a verifier:
+
 - `ms-a/src/main/resources/application.properties`
 - `ms-b/src/main/resources/application.properties`
 
@@ -55,11 +58,13 @@ Fichiers a verifier:
 5. Lancer les services (2 terminaux):
 
 Terminal 1:
+
 ```powershell
 .\mvnw -f .\ms-a\pom.xml spring-boot:run
 ```
 
 Terminal 2:
+
 ```powershell
 .\mvnw -f .\ms-b\pom.xml spring-boot:run
 ```
@@ -116,6 +121,7 @@ Erreur type:
 `bind: Only one usage of each socket address is normally permitted`
 
 Solutions:
+
 1. Arreter MySQL local (ex: `mysqld.exe`) puis relancer Docker
 2. Garder MySQL local, mapper Docker en `3307:3306`, puis mettre `localhost:3307` dans les `application.properties`
 

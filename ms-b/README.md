@@ -29,6 +29,7 @@ Depuis la racine du repo:
 Fichier: `ms-b/src/main/resources/application.properties`
 
 Selon ton Docker mapping:
+
 - `spring.datasource.url=jdbc:mysql://localhost:3306/ages_db`
 - ou `spring.datasource.url=jdbc:mysql://localhost:3307/ages_db`
 
