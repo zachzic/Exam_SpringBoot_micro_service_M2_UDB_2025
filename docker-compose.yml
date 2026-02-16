@@ -28,18 +28,17 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
 
-  postgres:
-    image: postgres:15-alpine
-    container_name: postgres
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_MULTIPLE_DATABASES: persons_db,ages_db
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: persons_db
     ports:
-      - "5432:5432"
+      - "3307:3306"
     volumes:
-      - postgres-data:/var/lib/postgresql/data
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      - mysql-data:/var/lib/mysql
+      - ./init-mysql.sql:/docker-entrypoint-initdb.d/init.sql
 
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
@@ -53,5 +52,15 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: localhost:9092
       KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
 
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: mysql
+
 volumes:
-  postgres-data:
+  mysql-data:

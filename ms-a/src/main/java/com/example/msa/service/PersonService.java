@@ -23,7 +23,7 @@ public class PersonService {
     @Transactional
     public Person createPerson(Person person) {
         Person savedPerson = personRepository.save(person);
-        log.info("Person created with ID: {}", savedPerson.getId());
+        log.info("Personne crée avec l'ID: {}", savedPerson.getId());
 
         PersonCreatedEvent event = new PersonCreatedEvent(
                 savedPerson.getId(),

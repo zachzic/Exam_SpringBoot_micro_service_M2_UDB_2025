@@ -17,13 +17,13 @@ public class KafkaConsumer {
 
     @KafkaListener(topics = "age-calculated-topic", groupId = "ms-a-group")
     public void handleAgeEvent(AgeEvent event) {
-        log.info("Received AgeEvent for person: {} with age: {}", event.getPersonId(), event.getAge());
+        log.info("Événement d'âge reçu pour la personne: {} avec l'âge: {}", event.getPersonId(), event.getAge());
 
         personRepository.findById(event.getPersonId()).ifPresent(person -> {
             person.setAge(event.getAge());
             person.setStatut("TERMINE".equals(event.getStatus()) ? Status.TERMINE : Status.ECHEC);
             personRepository.save(person);
-            log.info("Updated person {} with age {} and status {}",
+            log.info("Personne mise à jour {} avec l'âge {} et le statut {}",
                     event.getPersonId(), event.getAge(), person.getStatut());
         });
     }

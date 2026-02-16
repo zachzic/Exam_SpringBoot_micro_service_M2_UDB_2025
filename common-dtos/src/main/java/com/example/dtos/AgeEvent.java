@@ -10,5 +10,5 @@ import java.util.UUID;
 public class AgeEvent {
     private UUID personId;
     private Integer age;
-    private String status; // Ex: TERMINE ou ECHEC
+    private String status; // TERMINE ou ECHEC
 }

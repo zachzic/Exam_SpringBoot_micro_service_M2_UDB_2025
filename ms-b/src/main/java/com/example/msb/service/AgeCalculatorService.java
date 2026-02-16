@@ -33,14 +33,14 @@ public class AgeCalculatorService {
             personAge.setCalculatedAt(LocalDate.now());
 
             personAgeRepository.save(personAge);
-            log.info("Saved PersonAge for person: {} with age: {}", event.getPersonId(), age);
+            log.info("Âge de la personne enregistrée : {} avec l'âge : {}", event.getPersonId(), age);
 
             AgeEvent ageEvent = new AgeEvent(event.getPersonId(), age, "TERMINE");
             kafkaTemplate.send("age-calculated-topic", event.getPersonId().toString(), ageEvent);
-            log.info("Sent AgeEvent for person: {}", event.getPersonId());
+            log.info("AgeEvent envoyé pour la personne: {}", event.getPersonId());
 
         } catch (Exception e) {
-            log.error("Error processing PersonCreatedEvent for person: {}", event.getPersonId(), e);
+            log.error("Erreur lors du traitement de PersonCreatedEvent pour la personne: {}", event.getPersonId(), e);
             AgeEvent ageEvent = new AgeEvent(event.getPersonId(), null, "ECHEC");
             kafkaTemplate.send("age-calculated-topic", event.getPersonId().toString(), ageEvent);
         }

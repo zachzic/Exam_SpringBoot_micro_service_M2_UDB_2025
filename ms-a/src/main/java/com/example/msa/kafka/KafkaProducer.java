@@ -14,7 +14,7 @@ public class KafkaProducer {
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     public void sendPersonCreatedEvent(PersonCreatedEvent event) {
-        log.info("Sending PersonCreatedEvent for person: {}", event.getPersonId());
+        log.info("Envoi de PersonCreatedEvent pour la personne: {}", event.getPersonId());
         kafkaTemplate.send("person-created-topic", event.getPersonId().toString(), event);
     }
 }
